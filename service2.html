@@ -64,7 +64,8 @@
 								<a class="nav-link" href="index.html">Home</a>
 							</li>
 							<li class="nav-item @@service"><a class="nav-link" href="service.html">Videos</a></li>
-              				<li class="nav-item @@service"><a class="nav-link" href="service2.html">Guests</a></li>
+							<li class="nav-item @@service"><a class="nav-link" href="service2.html">Guests</a></li>
+							<li class="nav-item @@service"><a class="nav-link" href=#>News</a></li>
 							<!-- <li class="nav-item dropdown @@portfolio">
 								<a class="nav-link dropdown-toggle" href="#" id="dropdown03" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Portfolio <span class="ion-ios-arrow-down"></span></a>
 								<ul class="dropdown-menu" aria-labelledby="dropdown03">
@@ -116,7 +117,7 @@
 								</ul>
 							</li> -->
 							<!-- <li class="nav-item @@contact"><a class="nav-link" href="contact.html">Contact</a></li> -->
-							<li class="nav-item @@contact"><a class="nav-link" href="#">Contact</a></li>
+							<li class="nav-item @@contact"><a class="nav-link" href="#contact">Contact</a></li>
 						</ul>
 					</div>
 				</nav>
@@ -159,7 +160,7 @@
 	</div>
 </section>
 
-<section class="service-arrow">
+<!-- <section class="service-arrow">
 	<div class="container-fluid">
 		<div class="row">
 			<div class="col-lg-4 col-sm-6 bg-primary">
@@ -185,9 +186,9 @@
 			</div>
 		</div>
 	</div>
-</section>
+</section> -->
 
-<section class="service-list section bg-gray">
+<!-- <section class="service-list section bg-gray">
 	<div class="container">
 		<div class="row">
 			<div class="col-md-12">
@@ -235,22 +236,39 @@
 			</div>
 		</div>
 	</div>
-</section>
+</section> -->
 
-<section class="call-to-action bg-1 section-sm overly">
+<section id="contact" class="call-to-action bg-1 section-sm overly">
 	<div class="container">
 		<div class="row">
 			<div class="col-md-12">
 				<div class="block">
-					<h2 class="mb-3">We design delightful digital experiences.</h2>
-					<p>Read more about what we do and our philosophy of design. Judge for yourself The work and results <br> we’ve
-						achieved for other clients, and meet our highly experienced Team who just love to design.</p>
-					<a class="btn btn-main btn-solid-border" href="contact.html">Tell Us Your Story</a>
+					<h2 class="mb-3">Contact Us!</h2>
+					<p>We love discussing with guests. <br>
+						 Email us at TheAthleteSpine@gmail.com</p>
+					<a class="btn btn-main btn-solid-border" href="mailto:TheAtheleteSpine@gmail.com?subject=Contact%20Us%20-%20from%20website">Email Us!</a>
 				</div>
 			</div>
 		</div>
 	</div>
 </section>
+<script>
+  // JavaScript for smooth scrolling behavior
+  document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+    anchor.addEventListener('click', function (e) {
+      e.preventDefault();
+  
+      const targetId = this.getAttribute('href').substring(1);
+      const targetElement = document.getElementById(targetId);
+  
+      if (targetElement) {
+        targetElement.scrollIntoView({
+          behavior: 'smooth'
+        });
+      }
+    });
+  });
+</script>
 
 <!-- footer Start -->
 <footer class="footer">

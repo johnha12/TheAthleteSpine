@@ -19,7 +19,7 @@ async function displayGuests(pageNumber) {
     guestCardsContainer.innerHTML = ''; // Clear previous guests
 
     for (const guest of guestsToShow) {
-        const [id, name, videosFeatured, instagramUrl, photoAvailable] = guest;
+        const [id, name, type, placeOfWork, videosFeatured, watchVideo, photoAvailable] = guest;
 
         // Create guest card elements
         const guestCard = document.createElement('div');
@@ -29,21 +29,31 @@ async function displayGuests(pageNumber) {
         const nameElement = document.createElement('h3');
         nameElement.textContent = name;
 
+        // Create type
+        const typeElement = document.createElement('h3');
+        typeElement.textContent = type;
+
+        // Create place of work
+        const placeOfWorkElement = document.createElement('h3');
+        placeOfWorkElement.textContent = placeOfWork;
+
         // Create guest videos featured
         const videosFeaturedElement = document.createElement('p');
-        videosFeaturedElement.textContent = `Videos featured: ${videosFeatured}`;
+        videosFeaturedElement.textContent = `Featured Video: ${videosFeatured}`;
 
         // Create guest Instagram link
-        const instagramLink = document.createElement('a');
-        instagramLink.classList.add('card-link');
-        instagramLink.href = instagramUrl;
-        instagramLink.textContent = 'Instagram/LinkedIn/other';
-        instagramLink.target = '_blank'; // Open in new tab
+        const watchVideoElement = document.createElement('a');
+        watchVideoElement.classList.add('card-link');
+        watchVideoElement.href = watchVideo;
+        watchVideoElement.textContent = 'Watch this guest!';
+        watchVideoElement.target = '_blank'; // Open in new tab
 
         // Append elements to guest card
         guestCard.appendChild(nameElement);
+        guestCard.appendChild(typeElement);
+        guestCard.appendChild(placeOfWorkElement);
         guestCard.appendChild(videosFeaturedElement);
-        guestCard.appendChild(instagramLink);
+        guestCard.appendChild(watchVideoElement);
 
         // Check if photo is available
         // const photoUrl = photoAvailable === 'true' ? `guest_photos/${id}.jpg` : 'guest_photos/no_image.jpg';

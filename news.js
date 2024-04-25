@@ -1,110 +1,94 @@
 // Global variables
+const newsPerPage = 10; // Number of news articles per page
 let currentPage = 1; // Current page number
-const cardsPerPage = 3; // Number of cards per page
+let newsData = []; // Array to store news data
 
-// Fetch the CSV file containing titles and links
-fetch('news.csv')
-  .then(response => response.text())
-  .then(csvData => {
-    // Parse CSV data to extract titles and links
-    const rows = csvData.split('\n').map(row => row.split(','));
-    
-    // Fetch the images and create cards dynamically
-    const carouselContainer = document.getElementById('carousel-container');
-    rows.forEach(async (row, index) => { // Make the loop async to use await inside
-      // Extract title and link from the row
-      const [id, title, link] = row;
+// Function to parse CSV data and create news cards
+function createNewsCards(csvData) {
+    newsData = csvData.split('\n').map(row => row.split(','));
+    displayNews(currentPage);
+}
 
-      // Create a new card element
-      const card = document.createElement('div');
-      card.classList.add('card');
+// Function to display news articles for a specific page
+async function displayNews(pageNumber) {
+    const startIndex = (pageNumber - 1) * newsPerPage;
+    const endIndex = startIndex + newsPerPage;
+    const newsToShow = newsData.slice(startIndex, endIndex);
 
-      // Create an image element
-      const imageElement = document.createElement('img');
-      imageElement.classList.add('card-image');
-      
-      // Check if either .jpg or .JPG exists
-      const photoUrl = await getPhotoUrl(id);
-      imageElement.src = photoUrl;
-      imageElement.alt = title; // Alt text for accessibility
-      card.appendChild(imageElement);
+    const newsCardsContainer = document.getElementById('news-cards');
+    newsCardsContainer.innerHTML = ''; // Clear previous news articles
 
-      // Create a title element
-      const titleElement = document.createElement('h2');
-      titleElement.textContent = title;
-      card.appendChild(titleElement);
+    for (const news of newsToShow) {
+        const [id, title, link] = news;
 
-      // Create a link element
-      const linkElement = document.createElement('a');
-      linkElement.href = link.trim(); // Trim to remove leading/trailing whitespace
-      linkElement.textContent = 'Go to link';
-      linkElement.target = '_blank'; // Open link in a new tab
-      card.appendChild(linkElement);
+        // Create news card elements
+        const newsCard = document.createElement('div');
+        newsCard.classList.add('card');
 
-      // Append the card to the carousel container
-      carouselContainer.appendChild(card);
+        // Create news title
+        const titleElement = document.createElement('h3');
+        titleElement.textContent = title;
 
-      // Hide cards that are not on the current page
-      if (index >= cardsPerPage) {
-        card.style.display = 'none';
-      }
+        // Create news link
+        const linkElement = document.createElement('a');
+        linkElement.classList.add('card-link');
+        linkElement.href = link;
+        linkElement.textContent = 'Read more';
+        linkElement.target = '_blank'; // Open in new tab
+
+        // Append elements to news card
+        newsCard.appendChild(titleElement);
+        newsCard.appendChild(linkElement);
+
+        // Append news card to container
+        newsCardsContainer.appendChild(newsCard);
+    }
+
+    createPaginationControls();
+}
+
+// Function to create pagination controls
+function createPaginationControls() {
+    const totalPages = Math.ceil(newsData.length / newsPerPage);
+    const paginationContainer = document.getElementById('pagination');
+    paginationContainer.innerHTML = ''; // Clear previous pagination
+
+    // Previous button
+    const prevButton = document.createElement('button');
+    prevButton.textContent = 'Prev';
+    prevButton.addEventListener('click', () => {
+        if (currentPage > 1) {
+            currentPage--;
+            displayNews(currentPage);
+        }
     });
-  })
-  .catch(error => console.error('Error fetching CSV:', error));
+    paginationContainer.appendChild(prevButton);
 
-// Function to handle next page
-function nextPage() {
-  const cards = document.querySelectorAll('.card');
-  const totalPages = Math.ceil(cards.length / cardsPerPage);
-  const startIndex = (currentPage - 1) * cardsPerPage;
-  const endIndex = startIndex + cardsPerPage;
-  if (currentPage < totalPages) {
-    for (let i = startIndex; i < endIndex; i++) {
-      cards[i].style.display = 'none';
-      cards[i + cardsPerPage].style.display = 'block';
+    // Page buttons
+    for (let i = 1; i <= totalPages; i++) {
+        const pageButton = document.createElement('button');
+        pageButton.textContent = i;
+        pageButton.addEventListener('click', () => {
+            currentPage = i;
+            displayNews(currentPage);
+        });
+        paginationContainer.appendChild(pageButton);
     }
-    currentPage++;
-  }
+
+    // Next button
+    const nextButton = document.createElement('button');
+    nextButton.textContent = 'Next';
+    nextButton.addEventListener('click', () => {
+        if (currentPage < totalPages) {
+            currentPage++;
+            displayNews(currentPage);
+        }
+    });
+    paginationContainer.appendChild(nextButton);
 }
 
-// Function to handle previous page
-function prevPage() {
-  const cards = document.querySelectorAll('.card');
-  const totalPages = Math.ceil(cards.length / cardsPerPage);
-  const startIndex = (currentPage - 2) * cardsPerPage;
-  const endIndex = startIndex + cardsPerPage;
-  if (currentPage > 1) {
-    for (let i = startIndex; i < endIndex; i++) {
-      cards[i].style.display = 'block';
-      cards[i + cardsPerPage].style.display = 'none';
-    }
-    currentPage--;
-  }
-}
-
-async function getPhotoUrl(id) {
-  try {
-    // Check if either .jpg or .JPG exists
-    if (await checkImageExists(`news_photos/${id}.jpg`)) {
-      return `news_photos/${id}.jpg`;
-    } else if (await checkImageExists(`news_photos/${id}.JPG`)) {
-      return `news_photos/${id}.JPG`;
-    } else {
-      return 'news_photos/no_image.jpg'; // Return no_image.jpg if neither exists
-    }
-  } catch (error) {
-    console.error('Error checking image existence:', error);
-    return 'news_photos/no_image.jpg'; // Return no_image.jpg in case of error
-  }
-}
-
-// Function to check if an image exists
-async function checkImageExists(imageUrl) {
-  try {
-    const response = await fetch(imageUrl, { method: 'HEAD' });
-    return response.ok;
-  } catch (error) {
-    console.error('Error checking image existence:', error);
-    return false;
-  }
-}
+// Fetch CSV data and create news cards
+fetch('news.csv')
+    .then(response => response.text())
+    .then(createNewsCards)
+    .catch(error => console.error('Error fetching CSV data:', error));

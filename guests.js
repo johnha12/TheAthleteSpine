@@ -30,11 +30,11 @@ async function displayGuests(pageNumber) {
         nameElement.textContent = name;
 
         // Create type
-        const typeElement = document.createElement('h3');
+        const typeElement = document.createElement('h4');
         typeElement.textContent = type;
 
         // Create place of work
-        const placeOfWorkElement = document.createElement('h3');
+        const placeOfWorkElement = document.createElement('h4');
         placeOfWorkElement.textContent = placeOfWork;
 
         // Create guest videos featured

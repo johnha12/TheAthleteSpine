@@ -36,7 +36,7 @@ body {
 
 .home_logo {
   width: auto; /* Adjust the width as needed */
-  height: 70px; /* Maintain aspect ratio */
+  height: 100px; /* Maintain aspect ratio */
   /* Add any other styles you want to apply to images with the 'guest-photo' class */
 }
 
@@ -746,7 +746,7 @@ header .navbar-default .navbar-nav li a:hover {
 
 .navigation {
   background: #fff;
-  padding: 20px 0;
+  padding: 10px 0;
 }
 .navigation .navbar {
   margin-bottom: 0px;
